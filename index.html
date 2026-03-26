@@ -767,7 +767,7 @@
 <script>
 // ── DATA ──
 const books = [
-  { id: 'b1', type: 'book', image: 'images/mamamanie_COVER.jpg', title: 'Mamamanie', author: 'Julie Delrue', tag: 'Toneeltekst', price: 20.00, year: '2026' },
+  { id: 'b1', type: 'book', image: 'images/mamamanie_COVER.jpg', title: 'Mamamanie', author: 'Julie Delrue, Wouter Deprez', tag: 'Toneeltekst', price: 20.00, year: '2026' },
   { id: 'b2', type: 'book', image: 'images/MARTIN_COVERjpg.jpg', title: 'Portraits', author: 'Declan Dyrick', tag: 'Literatuur / Literature', price: 26.00, year: '2025' },
   { id: 'b3', type: 'book', image: 'images/equinox.jpg', title: 'Equinox', author: 'Diverse auteurs / Various authors', tag: 'Filosofie / Philosophy', price: 15.00, year: '2023' }
 ];
@@ -858,18 +858,23 @@ function renderRecords() {
   document.getElementById('records-grid').innerHTML = records.map(r => `
     <div class="product-card">
       <div class="product-img" style="background:${r.image ? '#eae5dc' : r.sleeveColor + '18'}">
-        ${r.image ? `
-          <img src="${r.image}" alt="${r.title}" style="width:65%;height:88%;object-fit:cover;box-shadow:4px 6px 20px rgba(0,0,0,0.18)">
-        ` : `
-          <div class="vinyl-wrap">
-            <div class="vinyl-sleeve" style="background:${r.sleeveColor}">
-              <span style="font-family:var(--font-display);font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em;font-style:italic">${r.artist}</span>
-            </div>
-            <div class="vinyl-disc">
-              <div class="vinyl-label" style="background:${r.labelColor}"></div>
-            </div>
-          </div>
-        `}
+     ${r.image ? `
+  <div style="position:relative;width:85%;aspect-ratio:1;display:flex;align-items:center;justify-content:center">
+    <div class="vinyl-disc" style="width:90%;height:90%;position:absolute;right:-20%;top:5%">
+      <div class="vinyl-label" style="background:${r.labelColor}"></div>
+    </div>
+    <img src="${r.image}" alt="${r.title}" style="width:90%;aspect-ratio:1;object-fit:cover;box-shadow:4px 6px 20px rgba(0,0,0,0.18);position:relative;z-index:1">
+  </div>
+` : `
+  <div class="vinyl-wrap">
+    <div class="vinyl-sleeve" style="background:${r.sleeveColor}">
+      <span style="font-family:var(--font-display);font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em;font-style:italic">${r.artist}</span>
+    </div>
+    <div class="vinyl-disc">
+      <div class="vinyl-label" style="background:${r.labelColor}"></div>
+    </div>
+  </div>
+`}
       </div>
       <div class="product-info">
         <div class="product-tag">${r.tag} · ${r.edition}</div>
