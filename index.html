@@ -857,15 +857,19 @@ function renderRecords() {
   const isNl = document.documentElement.lang !== 'en';
   document.getElementById('records-grid').innerHTML = records.map(r => `
     <div class="product-card">
-      <div class="product-img" style="background:${r.sleeveColor}18">
-        <div class="vinyl-wrap">
-          <div class="vinyl-sleeve" style="background:${r.sleeveColor}">
-            <span style="font-family:var(--font-display);font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em;font-style:italic">${r.artist}</span>
+      <div class="product-img" style="background:${r.image ? '#eae5dc' : r.sleeveColor + '18'}">
+        ${r.image ? `
+          <img src="${r.image}" alt="${r.title}" style="width:65%;height:88%;object-fit:cover;box-shadow:4px 6px 20px rgba(0,0,0,0.18)">
+        ` : `
+          <div class="vinyl-wrap">
+            <div class="vinyl-sleeve" style="background:${r.sleeveColor}">
+              <span style="font-family:var(--font-display);font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em;font-style:italic">${r.artist}</span>
+            </div>
+            <div class="vinyl-disc">
+              <div class="vinyl-label" style="background:${r.labelColor}"></div>
+            </div>
           </div>
-          <div class="vinyl-disc">
-            <div class="vinyl-label" style="background:${r.labelColor}"></div>
-          </div>
-        </div>
+        `}
       </div>
       <div class="product-info">
         <div class="product-tag">${r.tag} · ${r.edition}</div>
