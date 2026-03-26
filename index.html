@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IMPRINT — Uitgeverij & Muzieklabel</title>
+<title>Aleph — Uitgeverij & Muzieklabel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink: #0e0e0e;
-    --paper: #f4f0ea;
-    --cream: #ede8e0;
+    --paper: #f7f5f1;
+    --cream: #fefcf7;
     --muted: #9e9890;
-    --accent: #c8392b;
+    --accent: #2ba9c8;
     --border: #d0c9bf;
-    --font-display: 'Cormorant Garamond', serif;
+    --font-display: 'Adobe Caslon Pro', serif;
     --font-mono: 'DM Mono', monospace;
   }
 
@@ -68,8 +68,9 @@
     font-family: var(--font-display);
     font-size: 1.5rem;
     font-weight: 300;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
+    font-style: italic;
+    letter-spacing: 0.1 em;
+    text-transform: none;
     text-align: center;
     text-decoration: none;
     color: var(--ink);
@@ -453,9 +454,10 @@
   .footer-logo {
     font-family: var(--font-display);
     font-weight: 300;
-    letter-spacing: 0.3em;
+    font-style: italic;
+    letter-spacing: 0.1em;
     font-size: 1rem;
-    text-transform: uppercase;
+    text-transform: none;
   }
 
   .footer-note {
@@ -652,7 +654,7 @@
     <a class="nav-link" onclick="showSection('books')" data-nl="Boeken" data-en="Books">Boeken</a>
     <a class="nav-link" onclick="showSection('records')" data-nl="Platen" data-en="Records">Platen</a>
   </nav>
-  <a class="logo" href="#">IMPR<span>I</span>NT</a>
+  <a class="logo" href="#">Aleph</a>
   <div class="header-right">
     <button class="lang-toggle" onclick="toggleLang()">EN / NL</button>
     <button class="cart-btn" onclick="openCart()">
@@ -742,8 +744,8 @@
 
 <!-- FOOTER -->
 <footer>
-  <span class="footer-logo">IMPRINT</span>
-  <span class="footer-note" data-nl="© 2025 — Handgemaakt met zorg" data-en="© 2025 — Crafted with care">© 2025 — Handgemaakt met zorg</span>
+  <span class="footer-logo">Aleph</span>
+  <span class="footer-note" data-nl="© 2026 — Handgemaakt met zorg" data-en="© 2026 — Crafted with care">© 2025 — Handgemaakt met zorg</span>
 </footer>
 
 <!-- CART OVERLAY -->
