@@ -4,18 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aleph — Uitgeverij & Muzieklabel</title>
+<!-- Adobe Fonts: vervang JOUW-KIT-ID zodra je een web project hebt aangemaakt op fonts.adobe.com -->
+<!-- <link rel="stylesheet" href="https://use.typekit.net/JOUW-KIT-ID.css"> -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink: #0e0e0e;
-    --paper: #f7f5f1;
-    --cream: #fefcf7;
+    --paper: #f4f0ea;
+    --cream: #ede8e0;
     --muted: #9e9890;
-    --accent: #2ba9c8;
+    --accent: #2bc3c8;
     --border: #d0c9bf;
-    --font-display: 'Adobe Caslon Pro', serif;
+    --font-display: 'adobe-caslon-pro', 'EB Garamond', 'Big Caslon', Georgia, serif;
     --font-mono: 'DM Mono', monospace;
   }
 
@@ -66,16 +68,14 @@
 
   .logo {
     font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 300;
+    font-size: 1.6rem;
+    font-weight: 400;
     font-style: italic;
-    letter-spacing: 0.1 em;
-    text-transform: none;
+    letter-spacing: 0.08em;
     text-align: center;
     text-decoration: none;
     color: var(--ink);
   }
-  .logo span { color: var(--accent); }
 
   .header-right {
     display: flex;
@@ -110,6 +110,7 @@
     transition: background 0.2s;
   }
   .cart-btn:hover { background: var(--accent); }
+
   .cart-count {
     background: var(--accent);
     color: #fff;
@@ -135,7 +136,7 @@
 
   .hero-title {
     font-size: clamp(3.5rem, 7vw, 7rem);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 0.95;
     letter-spacing: -0.02em;
   }
@@ -143,6 +144,15 @@
   .hero-title em {
     font-style: italic;
     color: var(--accent);
+  }
+
+  .hero-sub {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 1.5rem;
   }
 
   .hero-right {
@@ -154,7 +164,7 @@
 
   .hero-desc {
     font-size: 1.05rem;
-    font-weight: 300;
+    font-weight: 400;
     color: #555;
     line-height: 1.7;
     max-width: 380px;
@@ -176,7 +186,7 @@
 
   .stat-val {
     font-size: 2rem;
-    font-weight: 300;
+    font-weight: 400;
     display: block;
   }
 
@@ -185,7 +195,6 @@
     display: flex;
     border-bottom: 1px solid var(--border);
     padding: 0 2.5rem;
-    gap: 0;
   }
 
   .cat-tab {
@@ -222,8 +231,9 @@
 
   .section-title {
     font-size: 2.5rem;
-    font-weight: 300;
-    letter-spacing: 0.05em;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.02em;
   }
 
   .section-count {
@@ -257,35 +267,19 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
+    background: #eae5dc;
   }
 
-  /* Book cover mockup */
-  .book-cover {
+  .product-img img {
     width: 65%;
     height: 88%;
-    position: relative;
+    object-fit: cover;
     box-shadow: 4px 6px 20px rgba(0,0,0,0.18);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1.2rem;
-    font-family: var(--font-display);
+    transition: transform 0.3s ease;
   }
+  .product-card:hover .product-img img { transform: scale(1.02); }
 
-  .book-title-mock {
-    font-size: 1rem;
-    font-weight: 300;
-    line-height: 1.2;
-    color: inherit;
-  }
-
-  .book-author-mock {
-    font-size: 0.75rem;
-    font-style: italic;
-    opacity: 0.8;
-  }
-
-  /* Vinyl mockup */
+  /* ── VINYL MOCKUP ── */
   .vinyl-wrap {
     width: 72%;
     aspect-ratio: 1;
@@ -314,17 +308,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.6s ease;
   }
+  .product-card:hover .vinyl-disc { transform: rotate(15deg); }
 
   .vinyl-label {
     width: 28%;
     height: 28%;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
+  /* ── PRODUCT INFO ── */
   .product-info {
     padding: 1.2rem 1.4rem 1.4rem;
   }
@@ -384,25 +378,25 @@
   .band {
     background: var(--ink);
     color: var(--paper);
-    padding: 1.5rem 2.5rem;
+    padding: 1.5rem 0;
     display: flex;
     align-items: center;
-    gap: 3rem;
     overflow: hidden;
   }
 
   .band-text {
     font-family: var(--font-display);
     font-size: 1.6rem;
-    font-weight: 300;
+    font-weight: 400;
     font-style: italic;
     white-space: nowrap;
-    animation: marquee 18s linear infinite;
+    animation: marquee 22s linear infinite;
+    padding-left: 100%;
   }
 
   @keyframes marquee {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    100% { transform: translateX(-100%); }
   }
 
   /* ── ABOUT ── */
@@ -430,14 +424,15 @@
 
   .about-heading {
     font-size: 2.2rem;
-    font-weight: 300;
+    font-weight: 400;
+    font-style: italic;
     line-height: 1.1;
     margin-bottom: 1.2rem;
   }
 
   .about-text {
     font-size: 1rem;
-    font-weight: 300;
+    font-weight: 400;
     color: #555;
     line-height: 1.75;
   }
@@ -453,11 +448,10 @@
 
   .footer-logo {
     font-family: var(--font-display);
-    font-weight: 300;
+    font-weight: 400;
     font-style: italic;
-    letter-spacing: 0.1em;
-    font-size: 1rem;
-    text-transform: none;
+    letter-spacing: 0.08em;
+    font-size: 1.1rem;
   }
 
   .footer-note {
@@ -670,6 +664,7 @@
     <h1 class="hero-title">
       Woorden<br>& <em>Klanken</em>
     </h1>
+    <p class="hero-sub">Aleph Uitgeverij &nbsp;·&nbsp; Clay Records</p>
   </div>
   <div class="hero-right">
     <p class="hero-desc" data-nl="Een onafhankelijke uitgeverij en muzieklabel. Wij brengen verhalen en muziek samen die de wereld net iets anders laten klinken." data-en="An independent publisher and music label. We bring together stories and music that make the world sound just a little different.">
@@ -696,14 +691,14 @@
 <div class="category-bar">
   <button class="cat-tab active" onclick="showSection('all', this)" data-nl="Alles" data-en="All">Alles</button>
   <button class="cat-tab" onclick="showSection('books', this)" data-nl="Boeken" data-en="Books">Boeken</button>
-  <button class="cat-tab" onclick="showSection('records', this)" data-nl="Platen" data-en="Records">Platen</button>
+  <button class="cat-tab" onclick="showSection('records', this)" data-nl="Platen — Powered by Clay" data-en="Records — Powered by Clay">Platen — Powered by Clay</button>
 </div>
 
 <!-- BOOKS SECTION -->
 <section class="shop-section shop-view" id="sec-books">
   <div class="section-header">
     <h2 class="section-title" data-nl="Boeken" data-en="Books">Boeken</h2>
-    <span class="section-count" data-nl="6 titels" data-en="6 titles">6 titels</span>
+    <span class="section-count" data-nl="2 titels" data-en="2 titles">2 titels</span>
   </div>
   <div class="product-grid" id="books-grid"></div>
 </section>
@@ -727,14 +722,14 @@
 <!-- ABOUT -->
 <section class="about">
   <div class="about-col">
-    <span class="about-label" data-nl="Uitgeverij" data-en="Publisher">Uitgeverij</span>
+    <span class="about-label" data-nl="Aleph Uitgeverij" data-en="Aleph Publishing">Aleph Uitgeverij</span>
     <h3 class="about-heading" data-nl="Verhalen die blijven hangen" data-en="Stories that stay with you">Verhalen die blijven hangen</h3>
     <p class="about-text" data-nl="Wij publiceren literaire fictie, poëzie en non-fictie van nieuwe en gevestigde auteurs. Elk boek is met zorg samengesteld — van het eerste woord tot de vormgeving." data-en="We publish literary fiction, poetry and non-fiction from emerging and established authors. Every book is crafted with care — from the first word to the final design.">
       Wij publiceren literaire fictie, poëzie en non-fictie van nieuwe en gevestigde auteurs. Elk boek is met zorg samengesteld — van het eerste woord tot de vormgeving.
     </p>
   </div>
   <div class="about-col">
-    <span class="about-label" data-nl="Muziekabel" data-en="Music Label">Muziekabel</span>
+    <span class="about-label" data-nl="Clay Muzieklabel" data-en="Clay Music Label">Clay Muzieklabel</span>
     <h3 class="about-heading" data-nl="Muziek op vinyl, voor altijd" data-en="Music on vinyl, forever">Muziek op vinyl, voor altijd</h3>
     <p class="about-text" data-nl="Ons label brengt onafhankelijke artiesten samen rond een gedeeld gevoel. Elke plaat is gelimiteerd en met de hand genummerd." data-en="Our label brings together independent artists around a shared feeling. Every record is limited edition and hand-numbered.">
       Ons label brengt onafhankelijke artiesten samen rond een gedeeld gevoel. Elke plaat is gelimiteerd en met de hand genummerd.
@@ -745,7 +740,7 @@
 <!-- FOOTER -->
 <footer>
   <span class="footer-logo">Aleph</span>
-  <span class="footer-note" data-nl="© 2026 — Handgemaakt met zorg" data-en="© 2026 — Crafted with care">© 2025 — Handgemaakt met zorg</span>
+  <span class="footer-note" data-nl="© 2026 — Handgemaakt met zorg" data-en="© 2026 — Crafted with care">© 2026 — Handgemaakt met zorg</span>
 </footer>
 
 <!-- CART OVERLAY -->
@@ -772,21 +767,17 @@
 <script>
 // ── DATA ──
 const books = [
-  { id: 'b1', type: 'book', color: '#2c3e50', textColor: '#e8e0d0', title: 'De Stille Kamer', author: 'M. van der Berg', tag: 'Fictie / Fiction', price: 22.50, year: '2024' },
-  { id: 'b2', type: 'book', color: '#8b4513', textColor: '#f5ede0', title: 'Asfalt & Adem', author: 'L. Fontein', tag: 'Poëzie / Poetry', price: 16.00, year: '2024' },
-  { id: 'b3', type: 'book', color: '#2d5016', textColor: '#e0f0d0', title: 'Grondwater', author: 'K. Osei', tag: 'Non-fictie', price: 24.95, year: '2023' },
-  { id: 'b4', type: 'book', color: '#1a1a2e', textColor: '#d0d8f0', title: 'The Paper Shore', author: 'A. Mitchell', tag: 'Fiction', price: 21.00, year: '2023' },
-  { id: 'b5', type: 'book', color: '#4a2040', textColor: '#f0d8e8', title: 'Vonken', author: 'R. de Graaf', tag: 'Debuut / Debut', price: 19.50, year: '2025' },
-  { id: 'b6', type: 'book', color: '#1c3a3a', textColor: '#d0eded', title: 'Cartografie', author: 'N. Bakker', tag: 'Essay', price: 18.00, year: '2025' },
+  { id: 'b1', type: 'book', image: 'images/mamamanie_COVER.jpg', title: 'Mamamanie', author: 'Julie Delrue', tag: 'Toneeltekst', price: 20.00, year: '2026' },
+  { id: 'b2', type: 'book', image: 'images/MARTIN_COVERjpg.jpg', title: 'Portraits', author: 'Declan Dyrick', tag: 'Literatuur / Literature', price: 26.00, year: '2025' },
 ];
 
 const records = [
-  { id: 'r1', type: 'record', sleeveColor: '#1a1a1a', labelColor: '#c8392b', title: 'Nacht Architectuur', artist: 'MARA', tag: 'Ambient / LP', price: 29.95, edition: 'Ed. 300' },
-  { id: 'r2', type: 'record', sleeveColor: '#3d2b1f', labelColor: '#d4a017', title: 'Pollendrif', artist: 'Het Kwartet', tag: 'Jazz / LP', price: 27.50, edition: 'Ed. 200' },
-  { id: 'r3', type: 'record', sleeveColor: '#0a2240', labelColor: '#4a9eda', title: 'Coastlines', artist: 'Dune Signal', tag: 'Electronic / 12"', price: 22.00, edition: 'Ed. 500' },
-  { id: 'r4', type: 'record', sleeveColor: '#1e3320', labelColor: '#6ab04c', title: 'Wortelklank', artist: 'Aarde Collectief', tag: 'Folk / LP', price: 28.00, edition: 'Ed. 150' },
-  { id: 'r5', type: 'record', sleeveColor: '#2a1040', labelColor: '#9b59b6', title: 'Haiku Machine', artist: 'SOTO', tag: 'Experimental / 10"', price: 24.50, edition: 'Ed. 400' },
-  { id: 'r6', type: 'record', sleeveColor: '#3a1515', labelColor: '#e74c3c', title: 'Stofgoud', artist: 'Ines Maas', tag: 'Singer-Songwriter / LP', price: 26.00, edition: 'Ed. 250' },
+  { id: 'r1', type: 'record', sleeveColor: '#1a1a1a', labelColor: '#2bc3c8', title: 'Nacht Architectuur', artist: 'MARA', tag: 'Ambient / LP', price: 29.95, edition: 'Clay · Ed. 300' },
+  { id: 'r2', type: 'record', sleeveColor: '#3d2b1f', labelColor: '#d4a017', title: 'Pollendrif', artist: 'Het Kwartet', tag: 'Jazz / LP', price: 27.50, edition: 'Clay · Ed. 200' },
+  { id: 'r3', type: 'record', sleeveColor: '#0a2240', labelColor: '#4a9eda', title: 'Coastlines', artist: 'Dune Signal', tag: 'Electronic / 12"', price: 22.00, edition: 'Clay · Ed. 500' },
+  { id: 'r4', type: 'record', sleeveColor: '#1e3320', labelColor: '#6ab04c', title: 'Wortelklank', artist: 'Aarde Collectief', tag: 'Folk / LP', price: 28.00, edition: 'Clay · Ed. 150' },
+  { id: 'r5', type: 'record', sleeveColor: '#2a1040', labelColor: '#9b59b6', title: 'Haiku Machine', artist: 'SOTO', tag: 'Experimental / 10"', price: 24.50, edition: 'Clay · Ed. 400' },
+  { id: 'r6', type: 'record', sleeveColor: '#3a1515', labelColor: '#e74c3c', title: 'Stofgoud', artist: 'Ines Maas', tag: 'Singer-Songwriter / LP', price: 26.00, edition: 'Clay · Ed. 250' },
 ];
 
 // ── CART STATE ──
@@ -844,14 +835,11 @@ function closeCart() {
 
 // ── RENDER PRODUCTS ──
 function renderBooks() {
-  const isEn = document.documentElement.lang === 'en';
+  const isNl = document.documentElement.lang !== 'en';
   document.getElementById('books-grid').innerHTML = books.map(b => `
     <div class="product-card">
-      <div class="product-img" style="background:${b.color}10">
-        <div class="book-cover" style="background:${b.color};color:${b.textColor}">
-          <div class="book-title-mock">${b.title}</div>
-          <div class="book-author-mock">${b.author}</div>
-        </div>
+      <div class="product-img">
+        <img src="${b.image}" alt="${b.title}">
       </div>
       <div class="product-info">
         <div class="product-tag">${b.tag} · ${b.year}</div>
@@ -859,7 +847,7 @@ function renderBooks() {
         <div class="product-meta">${b.author}</div>
         <div class="product-footer">
           <span class="product-price">€ ${b.price.toFixed(2).replace('.', ',')}</span>
-          <button class="add-to-cart" onclick="addToCart(${JSON.stringify(b).replace(/"/g,'&quot;')})">${isEn ? 'Add' : 'Voeg toe'}</button>
+          <button class="add-to-cart" onclick="addToCart(${JSON.stringify(b).replace(/"/g,'&quot;')})">${isNl ? 'Voeg toe' : 'Add'}</button>
         </div>
       </div>
     </div>
@@ -867,13 +855,13 @@ function renderBooks() {
 }
 
 function renderRecords() {
-  const isEn = document.documentElement.lang === 'en';
+  const isNl = document.documentElement.lang !== 'en';
   document.getElementById('records-grid').innerHTML = records.map(r => `
     <div class="product-card">
       <div class="product-img" style="background:${r.sleeveColor}18">
         <div class="vinyl-wrap">
           <div class="vinyl-sleeve" style="background:${r.sleeveColor}">
-            <span style="font-family:var(--font-display);font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em">${r.artist}</span>
+            <span style="font-family:var(--font-display);font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em;font-style:italic">${r.artist}</span>
           </div>
           <div class="vinyl-disc">
             <div class="vinyl-label" style="background:${r.labelColor}"></div>
@@ -886,7 +874,7 @@ function renderRecords() {
         <div class="product-meta">${r.artist}</div>
         <div class="product-footer">
           <span class="product-price">€ ${r.price.toFixed(2).replace('.', ',')}</span>
-          <button class="add-to-cart" onclick="addToCart(${JSON.stringify(r).replace(/"/g,'&quot;')})">${isEn ? 'Add' : 'Voeg toe'}</button>
+          <button class="add-to-cart" onclick="addToCart(${JSON.stringify(r).replace(/"/g,'&quot;')})">${isNl ? 'Voeg toe' : 'Add'}</button>
         </div>
       </div>
     </div>
@@ -895,25 +883,24 @@ function renderRecords() {
 
 // ── SECTION TOGGLE ──
 function showSection(which, clickedTab) {
-  const allTabs = document.querySelectorAll('.cat-tab, .nav-link');
-  allTabs.forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.cat-tab, .nav-link').forEach(t => t.classList.remove('active'));
   if (clickedTab) clickedTab.classList.add('active');
 
-  const books = document.getElementById('sec-books');
-  const records = document.getElementById('sec-records');
+  const secBooks = document.getElementById('sec-books');
+  const secRecords = document.getElementById('sec-records');
   const band = document.getElementById('band-divider');
 
   if (which === 'all') {
-    books.classList.remove('hidden');
-    records.classList.remove('hidden');
+    secBooks.classList.remove('hidden');
+    secRecords.classList.remove('hidden');
     band.style.display = 'flex';
   } else if (which === 'books') {
-    books.classList.remove('hidden');
-    records.classList.add('hidden');
+    secBooks.classList.remove('hidden');
+    secRecords.classList.add('hidden');
     band.style.display = 'none';
   } else {
-    books.classList.add('hidden');
-    records.classList.remove('hidden');
+    secBooks.classList.add('hidden');
+    secRecords.classList.remove('hidden');
     band.style.display = 'none';
   }
 }
@@ -929,7 +916,6 @@ function toggleLang() {
     el.textContent = currentLang === 'nl' ? el.dataset.nl : el.dataset.en;
   });
 
-  // Hero title
   document.querySelector('.hero-title').innerHTML = currentLang === 'nl'
     ? 'Woorden<br>& <em>Klanken</em>'
     : 'Words<br>& <em>Sounds</em>';
