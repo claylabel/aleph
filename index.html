@@ -858,12 +858,14 @@ function renderRecords() {
   document.getElementById('records-grid').innerHTML = records.map(r => `
     <div class="product-card">
       <div class="product-img" style="background:${r.image ? '#eae5dc' : r.sleeveColor + '18'}">
-     ${r.image ? `
-  <div style="position:relative;width:85%;aspect-ratio:1;display:flex;align-items:center;justify-content:center">
-    <div class="vinyl-disc" style="width:90%;height:90%;position:absolute;right:-20%;top:5%">
+   ${r.image ? `
+  <div class="vinyl-wrap">
+    <div class="vinyl-sleeve" style="background:none;padding:0;overflow:hidden">
+      <img src="${r.image}" alt="${r.title}" style="width:100%;height:100%;object-fit:cover">
+    </div>
+    <div class="vinyl-disc">
       <div class="vinyl-label" style="background:${r.labelColor}"></div>
     </div>
-    <img src="${r.image}" alt="${r.title}" style="width:90%;aspect-ratio:1;object-fit:cover;box-shadow:4px 6px 20px rgba(0,0,0,0.18);position:relative;z-index:1">
   </div>
 ` : `
   <div class="vinyl-wrap">
