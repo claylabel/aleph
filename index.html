@@ -681,7 +681,7 @@
       </div>
       <div>
         <span class="stat-num" data-nl="JAAR" data-en="SINCE">JAAR</span>
-        <span class="stat-val">'09</span>
+        <span class="stat-val">'93</span>
       </div>
     </div>
   </div>
@@ -691,7 +691,7 @@
 <div class="category-bar">
   <button class="cat-tab active" onclick="showSection('all', this)" data-nl="Alles" data-en="All">Alles</button>
   <button class="cat-tab" onclick="showSection('books', this)" data-nl="Boeken" data-en="Books">Boeken</button>
-  <button class="cat-tab" onclick="showSection('records', this)" data-nl="Platen — Powered by Clay" data-en="Records — Powered by Clay">Platen — Powered by Clay</button>
+  <button class="cat-tab" onclick="showSection('records', this)" data-nl="— Platen" data-en="Records">Platen</button>
 </div>
 
 <!-- BOOKS SECTION -->
@@ -723,7 +723,7 @@
 <section class="about">
   <div class="about-col">
     <span class="about-label" data-nl="Aleph Uitgeverij" data-en="Aleph Publishing">Aleph Uitgeverij</span>
-    <h3 class="about-heading" data-nl="Verhalen die blijven hangen" data-en="Stories that stay with you">Verhalen die blijven hangen</h3>
+    <h3 class="about-heading" data-nl="Verhalen die blijven" data-en="Stories that stay">Verhalen die blijven hangen</h3>
     <p class="about-text" data-nl="Wij publiceren literaire fictie, poëzie en non-fictie van nieuwe en gevestigde auteurs. Elk boek is met zorg samengesteld — van het eerste woord tot de vormgeving." data-en="We publish literary fiction, poetry and non-fiction from emerging and established authors. Every book is crafted with care — from the first word to the final design.">
       Wij publiceren literaire fictie, poëzie en non-fictie van nieuwe en gevestigde auteurs. Elk boek is met zorg samengesteld — van het eerste woord tot de vormgeving.
     </p>
@@ -760,7 +760,7 @@
       <span class="cart-total-label" data-nl="Totaal" data-en="Total">Totaal</span>
       <span class="cart-total-amount" id="cartTotal">€ 0,00</span>
     </div>
-    <button class="checkout-btn" data-nl="Afrekenen" data-en="Checkout">Afrekenen</button>
+    <button class="checkout-btn" onclick="goToCheckout()" data-nl="Afrekenen" data-en="Checkout">Afrekenen</button>
   </div>
 </div>
 
@@ -911,6 +911,18 @@ function showSection(which, clickedTab) {
     secRecords.classList.remove('hidden');
     band.style.display = 'none';
   }
+}
+
+// ── CHECKOUT FUNCTIE ──
+function goToCheckout() {
+  if (cart.length === 0) {
+    alert(currentLang === 'nl' ? 'Je winkelwagen is leeg!' : 'Your cart is empty!');
+    return;
+  }
+  // Sla winkelwagen op in localStorage
+  localStorage.setItem('alephCart', JSON.stringify(cart));
+  // Ga naar betalingspagina
+  window.location.href = 'betaling.html';
 }
 
 // ── LANGUAGE ──

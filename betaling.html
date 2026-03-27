@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aleph — Afrekenen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+  :root {
+    --ink: #0e0e0e;
+    --paper: #f4f0ea;
+    --cream: #ede8e0;
+    --muted: #9e9890;
+    --accent: #2bc3c8;
+    --border: #d0c9bf;
+    --font-display: 'adobe-caslon-pro', 'EB Garamond', 'Big Caslon', Georgia, serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 2.5rem;
+    height: 64px;
+  }
+
+  .header-left {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-link {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--ink); }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+  }
+
+  .lang-toggle {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    background: none;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .lang-toggle:hover { border-color: var(--ink); color: var(--ink); }
+
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--ink); }
+
+  /* ── CHECKOUT SECTION ── */
+  .checkout-wrapper {
+    max-width: 900px;
+    margin: 4rem auto;
+    padding: 0 2.5rem 5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+
+  .checkout-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .checkout-title {
+    font-size: 2rem;
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  /* ── ORDER SUMMARY ── */
+  .order-summary {
+    background: var(--cream);
+    padding: 2rem;
+    border: 1px solid var(--border);
+  }
+
+  .summary-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .order-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2rem;
+  }
+
+  .order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .item-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+  }
+
+  .item-details {
+    flex: 1;
+  }
+
+  .item-name {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .item-qty {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  .item-price {
+    font-weight: 500;
+    text-align: right;
+  }
+
+  .order-totals {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+  }
+
+  .total-row.final {
+    border-top: 1px solid var(--border);
+    padding-top: 0.75rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  /* ── PAYMENT FORM ── */
+  .payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .form-input {
+    border: 1px solid var(--border);
+    padding: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    background: white;
+    color: var(--ink);
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  #card-element {
+    border: 1px solid var(--border);
+    padding: 0.75rem;
+    background: white;
+    border-radius: 0;
+  }
+
+  #card-errors {
+    color: #c0392b;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    min-height: 20px;
+  }
+
+  .submit-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 1rem;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+  }
+
+  .submit-btn:hover:not(:disabled) {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .form-message {
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+
+  .form-message.success {
+    background: #d5f4e6;
+    border-color: #27ae60;
+    color: #27ae60;
+    display: block;
+  }
+
+  .form-message.error {
+    background: #fadbd8;
+    border-color: #c0392b;
+    color: #c0392b;
+    display: block;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3rem 2.5rem;
+    border-top: 1px solid var(--border);
+    background: var(--cream);
+    margin-top: 5rem;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-note {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  @media (max-width: 768px) {
+    .checkout-wrapper {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin: 2rem auto;
+    }
+    header { padding: 0 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <a href="index.html" class="nav-link back-link">← Terug</a>
+  </div>
+  <a href="index.html" class="logo">Aleph</a>
+  <div class="header-right">
+    <button class="lang-toggle" onclick="toggleLang()" data-nl="EN" data-en="NL">EN</button>
+  </div>
+</header>
+
+<!-- CHECKOUT CONTENT -->
+<div class="checkout-wrapper">
+  <!-- ORDER SUMMARY -->
+  <div class="checkout-col">
+    <h1 class="checkout-title" data-nl="Uw bestelling" data-en="Your Order">Uw bestelling</h1>
+    <div class="order-summary">
+      <div class="summary-title" data-nl="Samenvatting" data-en="Summary">Samenvatting</div>
+      <div class="order-items" id="orderItems"></div>
+      <div class="order-totals">
+        <div class="total-row">
+          <span data-nl="Subtotaal" data-en="Subtotal">Subtotaal</span>
+          <span id="subtotal">€ 0,00</span>
+        </div>
+        <div class="total-row">
+          <span data-nl="Verzending" data-en="Shipping">Verzending</span>
+          <span>€ 0,00</span>
+        </div>
+        <div class="total-row final">
+          <span data-nl="Totaal" data-en="Total">Totaal</span>
+          <span id="total">€ 0,00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT FORM -->
+  <div class="checkout-col">
+    <h1 class="checkout-title" data-nl="Betaling" data-en="Payment">Betaling</h1>
+    <form class="payment-form" id="paymentForm">
+      <div class="form-group">
+        <label class="form-label" data-nl="Volledige naam" data-en="Full Name">Volledige naam</label>
+        <input type="text" class="form-input" id="fullname" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" data-nl="E-mailadres" data-en="Email Address">E-mailadres</label>
+        <input type="email" class="form-input" id="email" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" data-nl="Adres" data-en="Address">Adres</label>
+        <input type="text" class="form-input" id="address" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" data-nl="Plaats" data-en="City">Plaats</label>
+          <input type="text" class="form-input" id="city" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-nl="Postcode" data-en="Postal Code">Postcode</label>
+          <input type="text" class="form-input" id="postal" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" data-nl="Kaartgegevens" data-en="Card Details">Kaartgegevens</label>
+        <div id="card-element"></div>
+        <div id="card-errors"></div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn" data-nl="Betaal nu" data-en="Pay Now">Betaal nu</button>
+      <div id="message" class="form-message"></div>
+    </form>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Aleph</span>
+  <span class="footer-note" data-nl="© 2026 — Handgemaakt met zorg" data-en="© 2026 — Crafted with care">© 2026 — Handgemaakt met zorg</span>
+</footer>
+
+<script>
+  // 🔴 PLAATS HIER JE PUBLISHABLE KEY
+  const stripe = Stripe('pk_live_51NRC9nCWdQWHIo5ftTgOfi4ic1TwQhyhLzFWCAXTq7h1uJLJBf7b3sVVKleKsNmzwzBJIGjWCOrBgYthm4pOCbiJ00RYX8L02S');
+  const elements = stripe.elements();
+  const cardElement = elements.create('card');
+  cardElement.mount('#card-element');
+
+  // Haal winkelwagen uit localStorage
+  let cart = JSON.parse(localStorage.getItem('alephCart') || '[]');
+
+  // Toon bestelling
+  function renderOrderSummary() {
+    const container = document.getElementById('orderItems');
+    const isNl = document.documentElement.lang !== 'en';
+    let total = 0;
+
+    container.innerHTML = cart.map(item => {
+      const subtotal = item.price * item.qty;
+      total += subtotal;
+      return `
+        <div class="order-item">
+          <div style="display:flex;align-items:center;flex:1">
+            <div class="item-icon">${item.type === 'book' ? '📖' : '🎵'}</div>
+            <div class="item-details">
+              <div class="item-name">${item.title}</div>
+              <div class="item-qty">${isNl ? 'Aantal' : 'Quantity'}: ${item.qty}</div>
+            </div>
+          </div>
+          <div class="item-price">€ ${subtotal.toFixed(2).replace('.', ',')}</div>
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('subtotal').textContent = '€ ' + total.toFixed(2).replace('.', ',');
+    document.getElementById('total').textContent = '€ ' + total.toFixed(2).replace('.', ',');
+  }
+
+  // Foutmeldingen kaartElement
+  cardElement.on('change', (event) => {
+    document.getElementById('card-errors').textContent = event.error ? event.error.message : '';
+  });
+
+  // Form submit
+  document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const btn = document.getElementById('submitBtn');
+    const msg = document.getElementById('message');
+    btn.disabled = true;
+    msg.className = 'form-message';
+    msg.innerHTML = '';
+
+    const { token, error } = await stripe.createToken(cardElement);
+
+    if (error) {
+      msg.className = 'form-message error';
+      msg.textContent = '❌ ' + error.message;
+      btn.disabled = false;
+    } else {
+      // Simuleer succesvolle betaling
+      msg.className = 'form-message success';
+      msg.innerHTML = `
+        ✅ <strong>${document.documentElement.lang === 'nl' ? 'Betaling succesvol!' : 'Payment successful!'}</strong><br>
+        ${document.documentElement.lang === 'nl' ? 'Bedankt voor uw bestelling.' : 'Thank you for your order.'}
+      `;
+      cardElement.clear();
+      
+      // Leeg winkelwagen
+      localStorage.removeItem('alephCart');
+      
+      // Redirect na 2 seconden
+      setTimeout(() => window.location.href = 'index.html', 2000);
+    }
+  });
+
+  // Taal schakelen
+  let currentLang = 'nl';
+  function toggleLang() {
+    currentLang = currentLang === 'nl' ? 'en' : 'nl';
+    document.documentElement.lang = currentLang;
+    document.querySelectorAll('[data-nl]').forEach(el => {
+      if (el.tagName === 'BUTTON' || el.tagName === 'A' || el.tagName === 'SPAN') {
+        el.textContent = currentLang === 'nl' ? el.dataset.nl : el.dataset.en;
+      }
+    });
+    renderOrderSummary();
+  }
+
+  // Init
+  renderOrderSummary();
+</script>
+</body>
+</html>
