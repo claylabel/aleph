@@ -84,18 +84,24 @@
     gap: 1.5rem;
   }
 
-  .lang-toggle {
+  .lang-switcher {
+    display: flex;
+    gap: 2px;
+  }
+
+  .lang-btn {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
     background: none;
     border: 1px solid var(--border);
-    padding: 4px 10px;
+    padding: 3px 8px;
     cursor: pointer;
     color: var(--muted);
     transition: all 0.2s;
   }
-  .lang-toggle:hover { border-color: var(--ink); color: var(--ink); }
+  .lang-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .lang-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
   .cart-btn {
     font-family: var(--font-mono);
@@ -454,6 +460,24 @@
     font-size: 1.1rem;
   }
 
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+  }
+
+  .footer-contact {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-contact:hover { color: var(--ink); }
+
   .footer-note {
     font-family: var(--font-mono);
     font-size: 0.65rem;
@@ -644,15 +668,21 @@
 <!-- HEADER -->
 <header>
   <nav class="header-left">
-    <a class="nav-link active" onclick="showSection('all')" data-nl="Alles" data-en="All">Alles</a>
-    <a class="nav-link" onclick="showSection('books')" data-nl="Boeken" data-en="Books">Boeken</a>
-    <a class="nav-link" onclick="showSection('records')" data-nl="Platen" data-en="Records">Platen</a>
+    <a class="nav-link" href="#" data-nl="Home" data-en="Home" data-fr="Accueil">Home</a>
+    <a class="nav-link" onclick="showSection('books')" data-nl="Boeken" data-en="Books" data-fr="Livres">Boeken</a>
+    <a class="nav-link" onclick="showSection('records')" data-nl="Platen" data-en="Records" data-fr="Disques">Platen</a>
+    <a class="nav-link" href="#about" data-nl="Over ons" data-en="About" data-fr="À propos">Over ons</a>
+    <a class="nav-link" href="mailto:info@alepheditions.eu" data-nl="Contact" data-en="Contact" data-fr="Contact">Contact</a>
   </nav>
   <a class="logo" href="#">Aleph</a>
   <div class="header-right">
-    <button class="lang-toggle" onclick="toggleLang()">EN / NL</button>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('nl')">NL</button>
+      <button class="lang-btn" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
     <button class="cart-btn" onclick="openCart()">
-      <span data-nl="Winkelwagen" data-en="Cart">Winkelwagen</span>
+      <span data-nl="Winkelwagen" data-en="Cart" data-fr="Panier">Winkelwagen</span>
       <span class="cart-count" id="cartCount">0</span>
     </button>
   </div>
@@ -667,20 +697,20 @@
     <p class="hero-sub">Aleph Uitgeverij &nbsp;·&nbsp; Clay Records</p>
   </div>
   <div class="hero-right">
-    <p class="hero-desc" data-nl="Een onafhankelijke uitgeverij en muzieklabel. Wij brengen verhalen en muziek samen die de wereld net iets anders laten klinken." data-en="An independent publisher and music label. We bring together stories and music that make the world sound just a little different.">
+    <p class="hero-desc" data-nl="Een onafhankelijke uitgeverij en muzieklabel. Wij brengen verhalen en muziek samen die de wereld net iets anders laten klinken." data-en="An independent publisher and music label. We bring together stories and music that make the world sound just a little different." data-fr="Une maison d'édition indépendante et un label musical. Nous réunissons des histoires et de la musique qui font résonner le monde autrement.">
       Een onafhankelijke uitgeverij en muzieklabel. Wij brengen verhalen en muziek samen die de wereld net iets anders laten klinken.
     </p>
     <div class="hero-stats">
       <div>
-        <span class="stat-num" data-nl="TITELS" data-en="TITLES">TITELS</span>
+        <span class="stat-num" data-nl="TITELS" data-en="TITLES" data-fr="TITRES">TITELS</span>
         <span class="stat-val">48</span>
       </div>
       <div>
-        <span class="stat-num" data-nl="ARTIESTEN" data-en="ARTISTS">ARTIESTEN</span>
+        <span class="stat-num" data-nl="ARTIESTEN" data-en="ARTISTS" data-fr="ARTISTES">ARTIESTEN</span>
         <span class="stat-val">12</span>
       </div>
       <div>
-        <span class="stat-num" data-nl="JAAR" data-en="SINCE">JAAR</span>
+        <span class="stat-num" data-nl="JAAR" data-en="SINCE" data-fr="DEPUIS">JAAR</span>
         <span class="stat-val">'93</span>
       </div>
     </div>
@@ -689,16 +719,16 @@
 
 <!-- CATEGORY TABS -->
 <div class="category-bar">
-  <button class="cat-tab active" onclick="showSection('all', this)" data-nl="Alles" data-en="All">Alles</button>
-  <button class="cat-tab" onclick="showSection('books', this)" data-nl="Boeken" data-en="Books">Boeken</button>
-  <button class="cat-tab" onclick="showSection('records', this)" data-nl="— Platen" data-en="Records">Platen</button>
+  <button class="cat-tab active" onclick="showSection('all', this)" data-nl="Alles" data-en="All" data-fr="Tout">Alles</button>
+  <button class="cat-tab" onclick="showSection('books', this)" data-nl="Boeken" data-en="Books" data-fr="Livres">Boeken</button>
+  <button class="cat-tab" onclick="showSection('records', this)" data-nl="Platen" data-en="Records" data-fr="Disques">Platen</button>
 </div>
 
 <!-- BOOKS SECTION -->
 <section class="shop-section shop-view" id="sec-books">
   <div class="section-header">
-    <h2 class="section-title" data-nl="Boeken" data-en="Books">Boeken</h2>
-    <span class="section-count" data-nl="2 titels" data-en="3 titles">3 titels</span>
+    <h2 class="section-title" data-nl="Boeken" data-en="Books" data-fr="Livres">Boeken</h2>
+    <span class="section-count" data-nl="3 titels" data-en="3 titles" data-fr="3 titres">3 titels</span>
   </div>
   <div class="product-grid" id="books-grid"></div>
 </section>
@@ -706,32 +736,32 @@
 <!-- DIVIDER BAND -->
 <div class="band" id="band-divider">
   <div class="band-text">
-    Lezen &amp; Luisteren &nbsp;·&nbsp; Reading &amp; Listening &nbsp;·&nbsp; Lezen &amp; Luisteren &nbsp;·&nbsp; Reading &amp; Listening &nbsp;·&nbsp; Lezen &amp; Luisteren &nbsp;·&nbsp; Reading &amp; Listening &nbsp;·&nbsp;
+    Lezen &amp; Luisteren &nbsp;·&nbsp; Reading &amp; Listening &nbsp;·&nbsp; Lire &amp; Écouter &nbsp;·&nbsp; Lezen &amp; Luisteren &nbsp;·&nbsp; Reading &amp; Listening &nbsp;·&nbsp; Lire &amp; Écouter &nbsp;·&nbsp;
   </div>
 </div>
 
 <!-- RECORDS SECTION -->
 <section class="shop-section shop-view" id="sec-records">
   <div class="section-header">
-    <h2 class="section-title" data-nl="Platen" data-en="Records">Platen </h2>
-    <span class="section-count" data-nl="3 releases" data-en="3 releases">3 releases</span>
+    <h2 class="section-title" data-nl="Platen" data-en="Records" data-fr="Disques">Platen</h2>
+    <span class="section-count" data-nl="3 releases" data-en="3 releases" data-fr="3 sorties">3 releases</span>
   </div>
   <div class="product-grid" id="records-grid"></div>
 </section>
 
 <!-- ABOUT -->
-<section class="about">
+<section class="about" id="about">
   <div class="about-col">
-    <span class="about-label" data-nl="Aleph Uitgeverij" data-en="Aleph Publishing">Aleph Uitgeverij</span>
-    <h3 class="about-heading" data-nl="Verhalen die blijven" data-en="Stories that stay">Verhalen die blijven hangen</h3>
-    <p class="about-text" data-nl="Wij publiceren literaire fictie, poëzie en non-fictie van nieuwe en gevestigde auteurs. Elk boek is met zorg samengesteld — van het eerste woord tot de vormgeving." data-en="We publish literary fiction, poetry and non-fiction from emerging and established authors. Every book is crafted with care — from the first word to the final design.">
+    <span class="about-label" data-nl="Aleph Uitgeverij" data-en="Aleph Publishing" data-fr="Éditions Aleph">Aleph Uitgeverij</span>
+    <h3 class="about-heading" data-nl="Verhalen die blijven" data-en="Stories that stay" data-fr="Des histoires qui restent">Verhalen die blijven hangen</h3>
+    <p class="about-text" data-nl="Wij publiceren literaire fictie, poëzie en non-fictie van nieuwe en gevestigde auteurs. Elk boek is met zorg samengesteld — van het eerste woord tot de vormgeving." data-en="We publish literary fiction, poetry and non-fiction from emerging and established authors. Every book is crafted with care — from the first word to the final design." data-fr="Nous publions de la fiction littéraire, de la poésie et des essais d'auteurs émergents et confirmés. Chaque livre est élaboré avec soin — du premier mot à la mise en page.">
       Wij publiceren literaire fictie, poëzie en non-fictie van nieuwe en gevestigde auteurs. Elk boek is met zorg samengesteld — van het eerste woord tot de vormgeving.
     </p>
   </div>
   <div class="about-col">
-    <span class="about-label" data-nl="Clay Muzieklabel" data-en="Clay Music Label">Clay Muzieklabel</span>
-    <h3 class="about-heading" data-nl="Muziek op vinyl, voor altijd" data-en="Music on vinyl, forever">Muziek op vinyl, voor altijd</h3>
-    <p class="about-text" data-nl="Ons label brengt onafhankelijke artiesten samen rond een gedeeld gevoel. Elke plaat is gelimiteerd en met de hand genummerd." data-en="Our label brings together independent artists around a shared feeling. Every record is limited edition and hand-numbered.">
+    <span class="about-label" data-nl="Clay Muzieklabel" data-en="Clay Music Label" data-fr="Clay Label Musical">Clay Muzieklabel</span>
+    <h3 class="about-heading" data-nl="Muziek op vinyl, voor altijd" data-en="Music on vinyl, forever" data-fr="La musique sur vinyle, pour toujours">Muziek op vinyl, voor altijd</h3>
+    <p class="about-text" data-nl="Ons label brengt onafhankelijke artiesten samen rond een gedeeld gevoel. Elke plaat is gelimiteerd en met de hand genummerd." data-en="Our label brings together independent artists around a shared feeling. Every record is limited edition and hand-numbered." data-fr="Notre label réunit des artistes indépendants autour d'une sensibilité commune. Chaque disque est en édition limitée et numéroté à la main.">
       Ons label brengt onafhankelijke artiesten samen rond een gedeeld gevoel. Elke plaat is gelimiteerd en met de hand genummerd.
     </p>
   </div>
@@ -740,7 +770,7 @@
 <!-- FOOTER -->
 <footer>
   <span class="footer-logo">Aleph</span>
-  <span class="footer-note" data-nl="© 2026 — Handgemaakt met zorg" data-en="© 2026 — Crafted with care">© 2026 — Handgemaakt met zorg</span>
+  <span class="footer-note" data-nl="© 2026 — Handgemaakt met zorg" data-en="© 2026 — Crafted with care" data-fr="© 2026 — Fait avec soin">© 2026 — Handgemaakt met zorg</span>
 </footer>
 
 <!-- CART OVERLAY -->
@@ -749,18 +779,18 @@
 <!-- CART DRAWER -->
 <div class="cart-drawer" id="cartDrawer">
   <div class="cart-header">
-    <span class="cart-title" data-nl="Winkelwagen" data-en="Cart">Winkelwagen</span>
+    <span class="cart-title" data-nl="Winkelwagen" data-en="Cart" data-fr="Panier">Winkelwagen</span>
     <button class="cart-close" onclick="closeCart()">×</button>
   </div>
   <div class="cart-items" id="cartItems">
-    <p class="cart-empty" data-nl="Je winkelwagen is leeg." data-en="Your cart is empty.">Je winkelwagen is leeg.</p>
+    <p class="cart-empty" data-nl="Je winkelwagen is leeg." data-en="Your cart is empty." data-fr="Votre panier est vide.">Je winkelwagen is leeg.</p>
   </div>
   <div class="cart-footer">
     <div class="cart-total">
-      <span class="cart-total-label" data-nl="Totaal" data-en="Total">Totaal</span>
+      <span class="cart-total-label" data-nl="Totaal" data-en="Total" data-fr="Total">Totaal</span>
       <span class="cart-total-amount" id="cartTotal">€ 0,00</span>
     </div>
-    <button class="checkout-btn" onclick="goToCheckout()" data-nl="Afrekenen" data-en="Checkout">Afrekenen</button>
+    <button class="checkout-btn" onclick="goToCheckout()" data-nl="Afrekenen" data-en="Checkout" data-fr="Commander">Afrekenen</button>
   </div>
 </div>
 
@@ -797,7 +827,6 @@ function removeFromCart(id) {
 }
 
 function renderCart() {
-  const isEn = document.documentElement.lang === 'en';
   const container = document.getElementById('cartItems');
   const countEl = document.getElementById('cartCount');
   const totalEl = document.getElementById('cartTotal');
@@ -805,8 +834,11 @@ function renderCart() {
   const totalPrice = cart.reduce((s,i) => s + (i.price * i.qty), 0);
   countEl.textContent = totalQty;
 
+  const emptyMsg = { nl: 'Je winkelwagen is leeg.', fr: 'Votre panier est vide.', en: 'Your cart is empty.' };
+  const removeMsg = { nl: 'Verwijder', fr: 'Retirer', en: 'Remove' };
+
   if (cart.length === 0) {
-    container.innerHTML = `<p class="cart-empty">${isEn ? 'Your cart is empty.' : 'Je winkelwagen is leeg.'}</p>`;
+    container.innerHTML = `<p class="cart-empty">${emptyMsg[currentLang]}</p>`;
   } else {
     container.innerHTML = cart.map(item => `
       <div class="cart-item">
@@ -815,7 +847,7 @@ function renderCart() {
           <div class="cart-item-name">${item.title}${item.qty > 1 ? ` <span style="font-family:var(--font-mono);font-size:0.7rem">×${item.qty}</span>` : ''}</div>
           <div class="cart-item-price">€ ${(item.price * item.qty).toFixed(2).replace('.', ',')}</div>
         </div>
-        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">${isEn ? 'Remove' : 'Verwijder'}</button>
+        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">${removeMsg[currentLang]}</button>
       </div>
     `).join('');
   }
@@ -835,7 +867,7 @@ function closeCart() {
 
 // ── RENDER PRODUCTS ──
 function renderBooks() {
-  const isNl = document.documentElement.lang !== 'en';
+  const addBtn = { nl: 'Voeg toe', fr: 'Ajouter', en: 'Add' };
   document.getElementById('books-grid').innerHTML = books.map(b => `
     <div class="product-card">
       <div class="product-img">
@@ -847,7 +879,7 @@ function renderBooks() {
         <div class="product-meta">${b.author}</div>
         <div class="product-footer">
           <span class="product-price">€ ${b.price.toFixed(2).replace('.', ',')}</span>
-          <button class="add-to-cart" onclick="addToCart(${JSON.stringify(b).replace(/"/g,'&quot;')})">${isNl ? 'Voeg toe' : 'Add'}</button>
+          <button class="add-to-cart" onclick="addToCart(${JSON.stringify(b).replace(/"/g,'&quot;')})">${addBtn[currentLang]}</button>
         </div>
       </div>
     </div>
@@ -855,26 +887,26 @@ function renderBooks() {
 }
 
 function renderRecords() {
-  const isNl = document.documentElement.lang !== 'en';
+  const addBtn = { nl: 'Voeg toe', fr: 'Ajouter', en: 'Add' };
   document.getElementById('records-grid').innerHTML = records.map(r => `
     <div class="product-card">
-      <div class="product-img" style="background:${r.image ? '#eae5dc' : r.sleeveColor + '18'}">
-${r.image ? `
-  <div class="vinyl-wrap">
-    <div class="vinyl-sleeve" style="background:none;padding:0;overflow:hidden">
-      <img src="${r.image}" alt="${r.title}" style="width:100%;height:100%;object-fit:cover">
-    </div>
-  </div>
-` : `
-  <div class="vinyl-wrap">
-    <div class="vinyl-sleeve" style="background:${r.sleeveColor}">
-      <span style="font-family:var(--font-display);font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em;font-style:italic">${r.artist}</span>
-    </div>
-    <div class="vinyl-disc">
-      <div class="vinyl-label" style="background:${r.labelColor}"></div>
-    </div>
-  </div>
-`}
+      <div class="product-img" style="background:${r.image ? '#eae5dc' : (r.sleeveColor || '#1a1a1a') + '18'}">
+        ${r.image ? `
+          <div class="vinyl-wrap">
+            <div class="vinyl-sleeve" style="background:none;padding:0;overflow:hidden">
+              <img src="${r.image}" alt="${r.title}" style="width:100%;height:100%;object-fit:cover">
+            </div>
+          </div>
+        ` : `
+          <div class="vinyl-wrap">
+            <div class="vinyl-sleeve" style="background:${r.sleeveColor}">
+              <span style="font-family:var(--font-display);font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em;font-style:italic">${r.artist}</span>
+            </div>
+            <div class="vinyl-disc">
+              <div class="vinyl-label" style="background:${r.labelColor}"></div>
+            </div>
+          </div>
+        `}
       </div>
       <div class="product-info">
         <div class="product-tag">${r.tag} · ${r.edition}</div>
@@ -882,7 +914,7 @@ ${r.image ? `
         <div class="product-meta">${r.artist}</div>
         <div class="product-footer">
           <span class="product-price">€ ${r.price.toFixed(2).replace('.', ',')}</span>
-          <button class="add-to-cart" onclick="addToCart(${JSON.stringify(r).replace(/"/g,'&quot;')})">${isNl ? 'Voeg toe' : 'Add'}</button>
+          <button class="add-to-cart" onclick="addToCart(${JSON.stringify(r).replace(/"/g,'&quot;')})">${addBtn[currentLang]}</button>
         </div>
       </div>
     </div>
@@ -928,17 +960,24 @@ function goToCheckout() {
 // ── LANGUAGE ──
 let currentLang = 'nl';
 
-function toggleLang() {
-  currentLang = currentLang === 'nl' ? 'en' : 'nl';
+function setLang(lang) {
+  currentLang = lang;
   document.documentElement.lang = currentLang;
 
-  document.querySelectorAll('[data-nl]').forEach(el => {
-    el.textContent = currentLang === 'nl' ? el.dataset.nl : el.dataset.en;
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
   });
 
-  document.querySelector('.hero-title').innerHTML = currentLang === 'nl'
-    ? 'Woorden<br>& <em>Klanken</em>'
-    : 'Words<br>& <em>Sounds</em>';
+  document.querySelectorAll('[data-nl]').forEach(el => {
+    el.textContent = el.dataset[currentLang] || el.dataset.nl;
+  });
+
+  const titles = {
+    nl: 'Woorden<br>& <em>Klanken</em>',
+    fr: 'Mots<br>& <em>Sons</em>',
+    en: 'Words<br>& <em>Sounds</em>'
+  };
+  document.querySelector('.hero-title').innerHTML = titles[currentLang];
 
   renderBooks();
   renderRecords();
