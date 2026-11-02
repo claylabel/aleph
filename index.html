@@ -871,6 +871,7 @@ function closeCart() {
 // ── RENDER PRODUCTS ──
 function renderBooks() {
   const addBtn = { nl: 'Voeg toe', fr: 'Ajouter', en: 'Add' };
+  const viewBtn = { nl: 'Bekijk', fr: 'Voir', en: 'View' };
   document.getElementById('books-grid').innerHTML = books.map(b => `
     <div class="product-card" ${b.url ? `onclick="window.open('${b.url}', '_blank', 'noopener')"` : ''}>
       <div class="product-img">
@@ -882,7 +883,10 @@ function renderBooks() {
         <div class="product-meta">${b.author}</div>
         <div class="product-footer">
           <span class="product-price">€ ${b.price.toFixed(2).replace('.', ',')}</span>
-          <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${JSON.stringify(b).replace(/"/g,'&quot;')})">${addBtn[currentLang]}</button>
+          ${b.url
+            ? `<a class="add-to-cart" href="${b.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${viewBtn[currentLang]}</a>`
+            : `<button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${JSON.stringify(b).replace(/"/g,'&quot;')})">${addBtn[currentLang]}</button>`
+          }
         </div>
       </div>
     </div>
