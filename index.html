@@ -10,657 +10,134 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #0e0e0e;
-    --paper: #f4f0ea;
-    --cream: #ede8e0;
-    --muted: #9e9890;
-    --accent: #2bc3c8;
-    --border: #d0c9bf;
-    --font-display: 'adobe-caslon-pro', 'EB Garamond', 'Big Caslon', Georgia, serif;
-    --font-mono: 'DM Mono', monospace;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--font-display);
-    font-size: 18px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-
-  /* ── HEADER ── */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--paper);
-    border-bottom: 1px solid var(--border);
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    padding: 0 2.5rem;
-    height: 64px;
-  }
-
-  .header-left {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-  }
-
-  .nav-link {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-    cursor: pointer;
-  }
-  .nav-link:hover, .nav-link.active { color: var(--ink); }
-
-  .logo {
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    font-weight: 400;
-    font-style: italic;
-    letter-spacing: 0.08em;
-    text-align: center;
-    text-decoration: none;
-    color: var(--ink);
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 1.5rem;
-  }
-
-  .lang-switcher {
-    display: flex;
-    gap: 2px;
-  }
-
-  .lang-btn {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    background: none;
-    border: 1px solid var(--border);
-    padding: 3px 8px;
-    cursor: pointer;
-    color: var(--muted);
-    transition: all 0.2s;
-  }
-  .lang-btn:hover { border-color: var(--ink); color: var(--ink); }
-  .lang-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-
-  .cart-btn {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    background: var(--ink);
-    color: var(--paper);
-    border: none;
-    padding: 6px 14px;
-    cursor: pointer;
-    position: relative;
-    transition: background 0.2s;
-  }
-  .cart-btn:hover { background: var(--accent); }
-
-  .cart-count {
-    background: var(--accent);
-    color: #fff;
-    border-radius: 50%;
-    width: 16px; height: 16px;
-    font-size: 0.6rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 6px;
-    vertical-align: middle;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    border-bottom: 1px solid var(--border);
-    padding: 5rem 2.5rem 4rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: end;
-  }
-
-  .hero-title {
-    font-size: clamp(3.5rem, 7vw, 7rem);
-    font-weight: 400;
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-title em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .hero-sub {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 1.5rem;
-  }
-
-  .hero-right {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding-bottom: 0.5rem;
-  }
-
-  .hero-desc {
-    font-size: 1.05rem;
-    font-weight: 400;
-    color: #555;
-    line-height: 1.7;
-    max-width: 380px;
-  }
-
-  .hero-stats {
-    display: flex;
-    gap: 3rem;
-  }
-
-  .stat-num {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    display: block;
-    margin-bottom: 2px;
-  }
-
-  .stat-val {
-    font-size: 2rem;
-    font-weight: 400;
-    display: block;
-  }
-
-  /* ── CATEGORY TABS ── */
-  .category-bar {
-    display: flex;
-    border-bottom: 1px solid var(--border);
-    padding: 0 2.5rem;
-  }
-
-  .cat-tab {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 1.2rem 2rem;
-    cursor: pointer;
-    border: none;
-    background: none;
-    color: var(--muted);
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    transition: all 0.2s;
-  }
-  .cat-tab:hover { color: var(--ink); }
-  .cat-tab.active {
-    color: var(--ink);
-    border-bottom-color: var(--ink);
-  }
-
-  /* ── PRODUCT GRID ── */
-  .shop-section {
-    padding: 3rem 2.5rem 5rem;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 2.5rem;
-  }
-
-  .section-title {
-    font-size: 2.5rem;
-    font-weight: 400;
-    font-style: italic;
-    letter-spacing: 0.02em;
-  }
-
-  .section-count {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-  }
-
-  .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 2px;
-  }
-
-  .product-card {
-    background: var(--cream);
-    cursor: pointer;
-    overflow: hidden;
-    transition: background 0.2s;
-    position: relative;
-  }
-  .product-card:hover { background: #e8e2d8; }
-  .product-card:hover .add-to-cart { opacity: 1; transform: translateY(0); }
-
-  .product-img {
-    width: 100%;
-    aspect-ratio: 3/4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    background: #eae5dc;
-  }
-
-  .product-img img {
-    width: 65%;
-    height: 88%;
-    object-fit: cover;
-    box-shadow: 4px 6px 20px rgba(0,0,0,0.18);
-    transition: transform 0.3s ease;
-  }
-  .product-card:hover .product-img img { transform: scale(1.02); }
-
-  /* ── VINYL MOCKUP ── */
-  .vinyl-wrap {
-    width: 72%;
-    aspect-ratio: 1;
-    position: relative;
-  }
-
-  .vinyl-sleeve {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    box-shadow: 3px 4px 18px rgba(0,0,0,0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .vinyl-disc {
-    width: 82%;
-    height: 82%;
-    border-radius: 50%;
-    background: conic-gradient(#111 0deg, #222 30deg, #111 60deg, #1a1a1a 90deg, #111 120deg, #222 150deg, #111 180deg, #1a1a1a 210deg, #111 240deg, #222 270deg, #111 300deg, #1a1a1a 330deg, #111 360deg);
-    position: absolute;
-    right: -18%;
-    top: 9%;
-    box-shadow: 2px 2px 12px rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.6s ease;
-  }
-  .product-card:hover .vinyl-disc { transform: rotate(15deg); }
-
-  .vinyl-label {
-    width: 28%;
-    height: 28%;
-    border-radius: 50%;
-  }
-
-  /* ── PRODUCT INFO ── */
-  .product-info {
-    padding: 1.2rem 1.4rem 1.4rem;
-  }
-
-  .product-tag {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.4rem;
-  }
-
-  .product-name {
-    font-size: 1.15rem;
-    font-weight: 400;
-    line-height: 1.3;
-    margin-bottom: 0.2rem;
-  }
-
-  .product-meta {
-    font-size: 0.9rem;
-    font-style: italic;
-    color: var(--muted);
-    margin-bottom: 0.8rem;
-  }
-
-  .product-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .product-price {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-  }
-
-  .add-to-cart {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: var(--ink);
-    color: var(--paper);
-    border: none;
-    padding: 6px 12px;
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(4px);
-    transition: all 0.2s;
-  }
-  .add-to-cart:hover { background: var(--accent); }
-
-  /* ── DIVIDER BAND ── */
-  .band {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 1.5rem 0;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  .band-text {
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    font-weight: 400;
-    font-style: italic;
-    white-space: nowrap;
-    animation: marquee 22s linear infinite;
-    padding-left: 100%;
-  }
-
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-  }
-
-  /* ── ABOUT ── */
-  .about {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-top: 1px solid var(--border);
-  }
-
-  .about-col {
-    padding: 4rem 2.5rem;
-    border-right: 1px solid var(--border);
-  }
-  .about-col:last-child { border-right: none; }
-
-  .about-label {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 1.5rem;
-    display: block;
-  }
-
-  .about-heading {
-    font-size: 2.2rem;
-    font-weight: 400;
-    font-style: italic;
-    line-height: 1.1;
-    margin-bottom: 1.2rem;
-  }
-
-  .about-text {
-    font-size: 1rem;
-    font-weight: 400;
-    color: #555;
-    line-height: 1.75;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 2rem 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .footer-logo {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-style: italic;
-    letter-spacing: 0.08em;
-    font-size: 1.1rem;
-  }
-
-  .footer-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.3rem;
-  }
-
-  .footer-contact {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .footer-contact:hover { color: var(--ink); }
-
-  .footer-note {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-  }
-
-  /* ── CART DRAWER ── */
-  .cart-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(14,14,14,0.4);
-    z-index: 200;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-  }
-  .cart-overlay.open { opacity: 1; pointer-events: all; }
-
-  .cart-drawer {
-    position: fixed;
-    top: 0; right: 0;
-    width: 380px;
-    height: 100vh;
-    background: var(--paper);
-    border-left: 1px solid var(--border);
-    z-index: 201;
-    transform: translateX(100%);
-    transition: transform 0.35s cubic-bezier(.4,0,.2,1);
-    display: flex;
-    flex-direction: column;
-  }
-  .cart-drawer.open { transform: translateX(0); }
-
-  .cart-header {
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .cart-title {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-
-  .cart-close {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.4rem;
-    color: var(--muted);
-    line-height: 1;
-  }
-  .cart-close:hover { color: var(--ink); }
-
-  .cart-items {
-    flex: 1;
-    overflow-y: auto;
-    padding: 1.5rem 2rem;
-  }
-
-  .cart-item {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border);
-    align-items: flex-start;
-  }
-
-  .cart-item-icon {
-    width: 48px; height: 48px;
-    background: var(--cream);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    flex-shrink: 0;
-  }
-
-  .cart-item-info { flex: 1; }
-
-  .cart-item-name {
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.3;
-  }
-
-  .cart-item-price {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-
-  .cart-item-remove {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-transform: uppercase;
-    padding: 0;
-  }
-  .cart-item-remove:hover { color: var(--accent); }
-
-  .cart-empty {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--muted);
-    font-style: italic;
-  }
-
-  .cart-footer {
-    border-top: 1px solid var(--border);
-    padding: 1.5rem 2rem;
-  }
-
-  .cart-total {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 1.2rem;
-  }
-
-  .cart-total-label {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .cart-total-amount {
-    font-family: var(--font-mono);
-    font-size: 1.1rem;
-    font-weight: 500;
-  }
-
-  .checkout-btn {
-    width: 100%;
-    background: var(--ink);
-    color: var(--paper);
-    border: none;
-    padding: 1rem;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .checkout-btn:hover { background: var(--accent); }
-
-  /* ── HIDDEN SECTIONS ── */
-  .shop-view { display: block; }
-  .shop-view.hidden { display: none; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    header {
-      padding: 0 1.2rem;
-      grid-template-columns: 1fr auto;
-    }
-    .header-left { display: none; }
-    .hero {
-      grid-template-columns: 1fr;
-      padding: 3rem 1.2rem 2.5rem;
-      gap: 2rem;
-    }
-    .hero-title { font-size: 3rem; }
-    .shop-section { padding: 2rem 1.2rem 4rem; }
-    .about { grid-template-columns: 1fr; }
-    .about-col { border-right: none; }
-    .category-bar { padding: 0 1.2rem; }
-    footer { padding: 1.5rem 1.2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
-    .cart-drawer { width: 100%; }
-  }
+:root{--ink:#0e0e0e;--paper:#f4f0ea;--cream:#ede8e0;--muted:#9e9890;--accent:#2bc3c8;--border:#d0c9bf;--font-display:'adobe-caslon-pro','EB Garamond','Big Caslon',Georgia,serif;--font-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-display);font-size:18px;line-height:1.6;min-height:100vh}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:var(--paper);border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 2.5rem;height:64px}
+.header-left{display:flex;gap:2rem;align-items:center}
+.nav-link{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--ink)}
+.logo{font-family:var(--font-display);font-size:1.6rem;font-weight:400;font-style:italic;letter-spacing:.08em;text-align:center;text-decoration:none;color:var(--ink)}
+.header-right{display:flex;align-items:center;justify-content:flex-end;gap:1.5rem}
+.lang-switcher{display:flex;gap:2px}
+.lang-btn{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;background:none;border:1px solid var(--border);padding:3px 8px;cursor:pointer;color:var(--muted);transition:all .2s}
+.lang-btn:hover{border-color:var(--ink);color:var(--ink)}
+.lang-btn.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.cart-btn{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.1em;background:var(--ink);color:var(--paper);border:none;padding:6px 14px;cursor:pointer;position:relative;transition:background .2s}
+.cart-btn:hover{background:var(--accent)}
+.cart-count{background:var(--accent);color:#fff;border-radius:50%;width:16px;height:16px;font-size:.6rem;display:inline-flex;align-items:center;justify-content:center;margin-left:6px;vertical-align:middle}
+
+/* HERO */
+.hero{border-bottom:1px solid var(--border);padding:5rem 2.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:end}
+.hero-title{font-size:clamp(3.5rem,7vw,7rem);font-weight:400;line-height:.95;letter-spacing:-.02em}
+.hero-title em{font-style:italic;color:var(--accent)}
+.hero-sub{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:1.5rem}
+.hero-right{display:flex;flex-direction:column;gap:1.5rem;padding-bottom:.5rem}
+.hero-desc{font-size:1.05rem;font-weight:400;color:#555;line-height:1.7;max-width:380px}
+.hero-stats{display:flex;gap:3rem}
+.stat-num{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:2px}
+.stat-val{font-size:2rem;font-weight:400;display:block}
+
+/* CATEGORY TABS */
+.category-bar{display:flex;border-bottom:1px solid var(--border);padding:0 2.5rem}
+.cat-tab{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:1.2rem 2rem;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.cat-tab:hover{color:var(--ink)}
+.cat-tab.active{color:var(--ink);border-bottom-color:var(--ink)}
+
+/* PRODUCT GRID */
+.shop-section{padding:3rem 2.5rem 5rem}
+.section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2.5rem}
+.section-title{font-size:2.5rem;font-weight:400;font-style:italic;letter-spacing:.02em}
+.section-count{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--muted)}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px}
+.product-card{background:var(--cream);cursor:pointer;overflow:hidden;transition:background .2s;position:relative}
+.product-card:hover{background:#e8e2d8}
+.product-card:hover .add-to-cart{opacity:1;transform:translateY(0)}
+.product-img{width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#eae5dc}
+.product-img img{width:65%;height:88%;object-fit:cover;box-shadow:4px 6px 20px rgba(0,0,0,.18);transition:transform .3s ease}
+.product-card:hover .product-img img{transform:scale(1.02)}
+
+/* VINYL MOCKUP */
+.vinyl-wrap{width:72%;aspect-ratio:1;position:relative}
+.vinyl-sleeve{width:100%;height:100%;position:absolute;box-shadow:3px 4px 18px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center}
+.vinyl-disc{width:82%;height:82%;border-radius:50%;background:conic-gradient(#111 0deg,#222 30deg,#111 60deg,#1a1a1a 90deg,#111 120deg,#222 150deg,#111 180deg,#1a1a1a 210deg,#111 240deg,#222 270deg,#111 300deg,#1a1a1a 330deg,#111 360deg);position:absolute;right:-18%;top:9%;box-shadow:2px 2px 12px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;transition:transform .6s ease}
+.product-card:hover .vinyl-disc{transform:rotate(15deg)}
+.vinyl-label{width:28%;height:28%;border-radius:50%}
+
+/* PRODUCT INFO */
+.product-info{padding:1.2rem 1.4rem 1.4rem}
+.product-tag{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.product-name{font-size:1.15rem;font-weight:400;line-height:1.3;margin-bottom:.2rem}
+.product-meta{font-size:.9rem;font-style:italic;color:var(--muted);margin-bottom:.8rem}
+.product-footer{display:flex;align-items:center;justify-content:space-between}
+.product-price{font-family:var(--font-mono);font-size:.85rem;letter-spacing:.05em}
+.add-to-cart{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:none;padding:6px 12px;cursor:pointer;opacity:0;transform:translateY(4px);transition:all .2s}
+.add-to-cart:hover{background:var(--accent)}
+a.add-to-cart{display:inline-block;text-decoration:none}
+
+/* DIVIDER BAND */
+.band{background:var(--ink);color:var(--paper);padding:1.5rem 0;display:flex;align-items:center;overflow:hidden}
+.band-text{font-family:var(--font-display);font-size:1.6rem;font-weight:400;font-style:italic;white-space:nowrap;animation:marquee 22s linear infinite;padding-left:100%}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+
+/* ABOUT */
+.about{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border)}
+.about-col{padding:4rem 2.5rem;border-right:1px solid var(--border)}
+.about-col:last-child{border-right:none}
+.about-label{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;display:block}
+.about-heading{font-size:2.2rem;font-weight:400;font-style:italic;line-height:1.1;margin-bottom:1.2rem}
+.about-text{font-size:1rem;font-weight:400;color:#555;line-height:1.75}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:var(--font-display);font-weight:400;font-style:italic;letter-spacing:.08em;font-size:1.1rem}
+.footer-note{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.1em;color:var(--muted)}
+
+/* CART DRAWER */
+.cart-overlay{position:fixed;inset:0;background:rgba(14,14,14,.4);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-drawer{position:fixed;top:0;right:0;width:380px;height:100vh;background:var(--paper);border-left:1px solid var(--border);z-index:201;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.cart-drawer.open{transform:translateX(0)}
+.cart-header{padding:1.5rem 2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cart-title{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase}
+.cart-close{background:none;border:none;cursor:pointer;font-size:1.4rem;color:var(--muted);line-height:1}
+.cart-close:hover{color:var(--ink)}
+.cart-items{flex:1;overflow-y:auto;padding:1.5rem 2rem}
+.cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.cart-item-icon{width:48px;height:48px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.cart-item-info{flex:1}
+.cart-item-name{font-size:1rem;font-weight:400;line-height:1.3}
+.cart-item-price{font-family:var(--font-mono);font-size:.75rem;color:var(--muted);margin-top:2px}
+.cart-item-remove{background:none;border:none;cursor:pointer;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;padding:0}
+.cart-item-remove:hover{color:var(--accent)}
+.cart-empty{text-align:center;padding:4rem 2rem;color:var(--muted);font-style:italic}
+.cart-footer{border-top:1px solid var(--border);padding:1.5rem 2rem}
+.cart-total{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.2rem}
+.cart-total-label{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.cart-total-amount{font-family:var(--font-mono);font-size:1.1rem;font-weight:500}
+.checkout-btn{width:100%;background:var(--ink);color:var(--paper);border:none;padding:1rem;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.checkout-btn:hover{background:var(--accent)}
+
+/* HIDDEN SECTIONS */
+.shop-view{display:block}
+.shop-view.hidden{display:none}
+
+/* RESPONSIVE */
+@media (max-width:768px){
+  header{padding:0 1.2rem;grid-template-columns:1fr auto}
+  .header-left{display:none}
+  .hero{grid-template-columns:1fr;padding:3rem 1.2rem 2.5rem;gap:2rem}
+  .hero-title{font-size:3rem}
+  .shop-section{padding:2rem 1.2rem 4rem}
+  .about{grid-template-columns:1fr}
+  .about-col{border-right:none}
+  .category-bar{padding:0 1.2rem}
+  footer{padding:1.5rem 1.2rem;flex-direction:column;gap:.5rem;text-align:center}
+  .cart-drawer{width:100%}
+}
 </style>
 </head>
 <body>
@@ -691,15 +168,11 @@
 <!-- HERO -->
 <section class="hero">
   <div>
-    <h1 class="hero-title">
-      Woorden<br>& <em>Klanken</em>
-    </h1>
+    <h1 class="hero-title">Woorden<br>& <em>Klanken</em></h1>
     <p class="hero-sub">Aleph Uitgeverij &nbsp;·&nbsp; Clay Records</p>
   </div>
   <div class="hero-right">
-    <p class="hero-desc" data-nl="Een onafhankelijke uitgeverij en muzieklabel." data-en="An independent publisher and music label." data-fr="Une maison d'édition indépendante et un label musical.">
-      Een onafhankelijke uitgeverij en muzieklabel.
-    </p>
+    <p class="hero-desc" data-nl="Een onafhankelijke uitgeverij en muzieklabel." data-en="An independent publisher and music label." data-fr="Une maison d'édition indépendante et un label musical.">Een onafhankelijke uitgeverij en muzieklabel.</p>
     <div class="hero-stats">
       <div>
         <span class="stat-num" data-nl="TITELS" data-en="TITLES" data-fr="TITRES">TITELS</span>
@@ -728,7 +201,7 @@
 <section class="shop-section shop-view" id="sec-books">
   <div class="section-header">
     <h2 class="section-title" data-nl="Boeken" data-en="Books" data-fr="Livres">Boeken</h2>
-    <span class="section-count" data-nl="3 titels" data-en="3 titles" data-fr="3 titres">3 titels</span>
+    <span class="section-count" data-nl="4 titels" data-en="4 titles" data-fr="4 titres">4 titels</span>
   </div>
   <div class="product-grid" id="books-grid"></div>
 </section>
@@ -754,19 +227,13 @@
   <div class="about-col">
     <span class="about-label" data-nl="Aleph Uitgeverij" data-en="Aleph Publishing" data-fr="Éditions Aleph">Aleph Uitgeverij</span>
     <h3 class="about-heading" data-nl="Verhalen die blijven" data-en="Stories that stay" data-fr="Des histoires qui restent">Verhalen die blijven</h3>
-    <p class="about-text" data-nl="Wij publiceren literaire fictie, poëzie en theaterteksten van nieuwe en gevestigde auteurs." data-en="We publish literary fiction, poetry and theater texts from emerging and established authors." data-fr="Nous publions de la fiction littéraire, de la poésie et des textes de théâtre d'auteurs émergents et confirmés.">
-      Wij publiceren literaire fictie, poëzie en theaterteksten van nieuwe en gevestigde auteurs.
-    </p>
+    <p class="about-text" data-nl="Wij publiceren literaire fictie, poëzie en theaterteksten van nieuwe en gevestigde auteurs." data-en="We publish literary fiction, poetry and theater texts from emerging and established authors." data-fr="Nous publions de la fiction littéraire, de la poésie et des textes de théâtre d'auteurs émergents et confirmés.">Wij publiceren literaire fictie, poëzie en theaterteksten van nieuwe en gevestigde auteurs.</p>
   </div>
   <div class="about-col">
     <span class="about-label" data-nl="Clay Muzieklabel" data-en="Clay Music Label" data-fr="Clay Label Musical">Clay Muzieklabel</span>
     <h3 class="about-heading" data-nl="Muziek op vinyl" data-en="Music on vinyl" data-fr="La musique sur vinyle">Muziek op vinyl</h3>
-    <p class="about-text" data-nl="Ons label brengt de muziek van artiesten uit waar we samen als producers of componisten met veel liefde aan hebben gewerkt." data-en="Our label brings together music from independent artists that we, as producers or composers, have worked on with great love." data-fr="
-124
-Notre label réunit des musiques d'artistes indépendants sur lesquelles nous avons travaillé avec beaucoup d'amour, en tant que producteurs ou compositeurs.">
-      Ons label brengt de muziek van artiesten uit waar we samen als producers of componisten met veel liefde aan hebben gewerkt.
-    </p>
-  </div>x
+    <p class="about-text" data-nl="Ons label brengt de muziek van artiesten uit waar we samen als producers of componisten met veel liefde aan hebben gewerkt." data-en="Our label brings together music from independent artists that we, as producers or composers, have worked on with great love." data-fr="Notre label réunit des musiques d'artistes indépendants sur lesquelles nous avons travaillé avec beaucoup d'amour, en tant que producteurs ou compositeurs.">Ons label brengt de muziek van artiesten uit waar we samen als producers of componisten met veel liefde aan hebben gewerkt.</p>
+  </div>
 </section>
 
 <!-- FOOTER -->
@@ -798,9 +265,11 @@ Notre label réunit des musiques d'artistes indépendants sur lesquelles nous av
 
 <script>
 // ── DATA ──
+// Heeft een boek een 'url', dan opent de kaart die link in een nieuw tabblad
+// en toont de knop "Bekijk" in plaats van "Voeg toe".
 const books = [
- { id: 'b1', type: 'book', image: 'images/niels_COVER.jpg', title: 'Ruïnes', author: 'Niels De Vos', tag: 'Literatuur', price: 24,99 , year: '2026' , url: 'https://nielsdevos.com' },
-  { id: 'b1', type: 'book', image: 'images/mamamanie_COVER.jpg', title: 'Mamamanie', author: 'Julie Delrue, Wouter Deprez', tag: 'Toneeltekst', price: 20.00, year: '2026' },
+  { id: 'b0', type: 'book', image: 'images/niels_COVER.jpg', title: 'Ruïnes', author: 'Niels De Vos', tag: 'Literatuur', price: 24.99, year: '2026', url: 'https://nielsdevos.com' },
+  { id: 'b1', type: 'book', image: 'images/mamamanie_COVER.jpg', title: 'Mamamanie', author: 'Julie Delrue, Wouter Deprez', tag: 'Toneeltekst', price: 20.00, year: '2026', url: 'https://JOUW-LINK-HIER' },
   { id: 'b2', type: 'book', image: 'images/MARTIN_COVERjpg.jpg', title: 'Portraits', author: 'Declan Dyrick', tag: 'Literatuur / Literature', price: 26.00, year: '2025' },
   { id: 'b3', type: 'book', image: 'images/equinox.jpg', title: 'Equinox', author: 'Diverse auteurs / Various authors', tag: 'Filosofie / Philosophy', price: 15.00, year: '2023' }
 ];
@@ -809,12 +278,11 @@ const records = [
   { id: 'r1', type: 'record', image: 'images/SX_ARCHE_ARTWORK.jpg', title: 'Arche', artist: 'SX', tag: 'Indiepop / LP', price: 29.95, edition: 'Clay' },
   { id: 'r2', type: 'record', image: 'images/sxunplugged.jpg', title: 'Unplugged', artist: 'SX', tag: 'Acoustic / LP', price: 29.95, edition: 'Clay · Ed. 500' },
   { id: 'r3', type: 'record', image: 'images/lyr_3000.jpg', title: 'Leave You / Remain', artist: 'Low Hill', tag: 'Electronic / LP', price: 27.50, edition: 'Clay · Ed. 200' }
-  
-
 ];
 
 // ── CART STATE ──
 let cart = [];
+let currentLang = 'nl';
 
 function addToCart(item) {
   const existing = cart.find(i => i.id === item.id);
@@ -833,8 +301,8 @@ function renderCart() {
   const container = document.getElementById('cartItems');
   const countEl = document.getElementById('cartCount');
   const totalEl = document.getElementById('cartTotal');
-  const totalQty = cart.reduce((s,i) => s + i.qty, 0);
-  const totalPrice = cart.reduce((s,i) => s + (i.price * i.qty), 0);
+  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+  const totalPrice = cart.reduce((s, i) => s + (i.price * i.qty), 0);
   countEl.textContent = totalQty;
 
   const emptyMsg = { nl: 'Je winkelwagen is leeg.', fr: 'Votre panier est vide.', en: 'Your cart is empty.' };
@@ -885,7 +353,7 @@ function renderBooks() {
           <span class="product-price">€ ${b.price.toFixed(2).replace('.', ',')}</span>
           ${b.url
             ? `<a class="add-to-cart" href="${b.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${viewBtn[currentLang]}</a>`
-            : `<button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${JSON.stringify(b).replace(/"/g,'&quot;')})">${addBtn[currentLang]}</button>`
+            : `<button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${JSON.stringify(b).replace(/"/g, '&quot;')})">${addBtn[currentLang]}</button>`
           }
         </div>
       </div>
@@ -897,23 +365,12 @@ function renderRecords() {
   const addBtn = { nl: 'Voeg toe', fr: 'Ajouter', en: 'Add' };
   document.getElementById('records-grid').innerHTML = records.map(r => `
     <div class="product-card">
-      <div class="product-img" style="background:${r.image ? '#eae5dc' : (r.sleeveColor || '#1a1a1a') + '18'}">
-        ${r.image ? `
-          <div class="vinyl-wrap">
-            <div class="vinyl-sleeve" style="background:none;padding:0;overflow:hidden">
-              <img src="${r.image}" alt="${r.title}" style="width:100%;height:100%;object-fit:cover">
-            </div>
+      <div class="product-img" style="background:#eae5dc">
+        <div class="vinyl-wrap">
+          <div class="vinyl-sleeve" style="background:none;padding:0;overflow:hidden">
+            <img src="${r.image}" alt="${r.title}" style="width:100%;height:100%;object-fit:cover">
           </div>
-        ` : `
-          <div class="vinyl-wrap">
-            <div class="vinyl-sleeve" style="background:${r.sleeveColor}">
-              <span style="font-family:var(--font-display);font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em;font-style:italic">${r.artist}</span>
-            </div>
-            <div class="vinyl-disc">
-              <div class="vinyl-label" style="background:${r.labelColor}"></div>
-            </div>
-          </div>
-        `}
+        </div>
       </div>
       <div class="product-info">
         <div class="product-tag">${r.tag} · ${r.edition}</div>
@@ -921,7 +378,7 @@ function renderRecords() {
         <div class="product-meta">${r.artist}</div>
         <div class="product-footer">
           <span class="product-price">€ ${r.price.toFixed(2).replace('.', ',')}</span>
-          <button class="add-to-cart" onclick="addToCart(${JSON.stringify(r).replace(/"/g,'&quot;')})">${addBtn[currentLang]}</button>
+          <button class="add-to-cart" onclick="addToCart(${JSON.stringify(r).replace(/"/g, '&quot;')})">${addBtn[currentLang]}</button>
         </div>
       </div>
     </div>
@@ -952,21 +409,17 @@ function showSection(which, clickedTab) {
   }
 }
 
-// ── CHECKOUT FUNCTIE ──
+// ── CHECKOUT ──
 function goToCheckout() {
   if (cart.length === 0) {
     alert(currentLang === 'nl' ? 'Je winkelwagen is leeg!' : 'Your cart is empty!');
     return;
   }
-  // Sla winkelwagen op in localStorage
   localStorage.setItem('alephCart', JSON.stringify(cart));
-  // Ga naar betalingspagina
   window.location.href = 'betaling.html';
 }
 
 // ── LANGUAGE ──
-let currentLang = 'nl';
-
 function setLang(lang) {
   currentLang = lang;
   document.documentElement.lang = currentLang;
