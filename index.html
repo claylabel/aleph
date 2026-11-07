@@ -74,9 +74,18 @@ header{position:sticky;top:0;z-index:100;background:var(--paper);border-bottom:1
 .product-meta{font-size:.9rem;font-style:italic;color:var(--muted);margin-bottom:.8rem}
 .product-footer{display:flex;align-items:center;justify-content:space-between}
 .product-price{font-family:var(--font-mono);font-size:.85rem;letter-spacing:.05em}
-.add-to-cart{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:none;padding:6px 12px;cursor:pointer;opacity:0;transform:translateY(4px);transition:all .2s}
+.add-to-cart{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;background:var(--ink);color:var(--paper);border:none;padding:6px 12px;cursor:pointer;opacity:1;transform:none;transition:all .2s}
 .add-to-cart:hover{background:var(--accent)}
 a.add-to-cart{display:inline-block;text-decoration:none}
+.book-card{cursor:default}
+.product-img.zoomable{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;background:rgba(14,14,14,.88);z-index:300;display:none;align-items:center;justify-content:center;padding:2rem;cursor:zoom-out}
+.lightbox.open{display:flex}
+.lightbox img{max-width:100%;max-height:100%;object-fit:contain;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.lightbox-close{position:absolute;top:1rem;right:1.5rem;background:none;border:none;color:var(--paper);font-size:2rem;line-height:1;cursor:pointer}
+.btn-group{display:flex;gap:6px}
+.add-to-cart.btn-secondary{background:transparent;color:var(--ink);border:1px solid var(--ink);padding:5px 11px}
+.add-to-cart.btn-secondary:hover{background:var(--ink);color:var(--paper)}
 
 /* DIVIDER BAND */
 .band{background:var(--ink);color:var(--paper);padding:1.5rem 0;display:flex;align-items:center;overflow:hidden}
@@ -242,6 +251,12 @@ footer{border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;align
   <span class="footer-note" data-nl="© 2026 — Handgemaakt met zorg" data-en="© 2026 — Crafted with care" data-fr="© 2026 — Fait avec soin">© 2026 — Handgemaakt met zorg</span>
 </footer>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Sluiten">×</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
 <!-- CART OVERLAY -->
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
 
@@ -267,8 +282,10 @@ footer{border-top:1px solid var(--border);padding:2rem 2.5rem;display:flex;align
 // ── DATA ──
 // Heeft een boek een 'url', dan opent de kaart die link in een nieuw tabblad
 // en toont de knop "Bekijk" in plaats van "Voeg toe".
+// Heeft een boek ook een 'buyUrl' (Stripe-betaallink), dan krijgt de kaart twee knoppen:
+// "Kopen" (Stripe) en "Meer info" (url).
 const books = [
-  { id: 'b0', type: 'book', image: 'images/niels_COVER.jpg', title: 'Ruïnes', author: 'Niels De Vos', tag: 'Literatuur', price: 24.99, year: '2026', url: 'https://nielsdevos.com' },
+  { id: 'b0', type: 'book', image: 'images/niels_COVER.jpg', title: 'Ruïnes', author: 'Niels De Vos', tag: 'Literatuur', price: 24.99, year: '2026', url: 'https://nielsdevos.com', buyUrl: 'https://buy.stripe.com/bJe00ih0A2bu0kA9yw3wQ00' },
   { id: 'b1', type: 'book', image: 'images/mamamanie_COVER.jpg', title: 'Mamamanie', author: 'Julie Delrue, Wouter Deprez', tag: 'Toneeltekst', price: 20.00, year: '2026', url: 'https://www.juliedelrue.be' },
   { id: 'b2', type: 'book', image: 'images/MARTIN_COVERjpg.jpg', title: 'Portraits', author: 'Declan Dyrick', tag: 'Literatuur / Literature', price: 26.00, year: '2025' },
   { id: 'b3', type: 'book', image: 'images/equinox.jpg', title: 'Equinox', author: 'Diverse auteurs / Various authors', tag: 'Filosofie / Philosophy', price: 15.00, year: '2023' }
@@ -336,13 +353,27 @@ function closeCart() {
   document.getElementById('cartDrawer').classList.remove('open');
 }
 
+// ── LIGHTBOX ──
+function openLightbox(src, alt) {
+  const img = document.getElementById('lightboxImg');
+  img.src = src;
+  img.alt = alt || '';
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
 // ── RENDER PRODUCTS ──
 function renderBooks() {
-  const addBtn = { nl: 'Voeg toe', fr: 'Ajouter', en: 'Add' };
-  const viewBtn = { nl: 'Bekijk', fr: 'Voir', en: 'View' };
+  const addBtn = { nl: 'Kopen', fr: 'Acheter', en: 'Buy' };
+  const viewBtn = { nl: 'Kopen', fr: 'Acheter', en: 'Buy' };
+  const buyBtn = { nl: 'Kopen', fr: 'Acheter', en: 'Buy' };
+  const infoBtn = { nl: 'Meer info', fr: 'Plus d\'infos', en: 'More info' };
   document.getElementById('books-grid').innerHTML = books.map(b => `
-    <div class="product-card" ${b.url ? `onclick="window.open('${b.url}', '_blank', 'noopener')"` : ''}>
-      <div class="product-img">
+    <div class="product-card book-card">
+      <div class="product-img zoomable" onclick="openLightbox('${b.image}', '${b.title}')">
         <img src="${b.image}" alt="${b.title}">
       </div>
       <div class="product-info">
@@ -351,7 +382,12 @@ function renderBooks() {
         <div class="product-meta">${b.author}</div>
         <div class="product-footer">
           <span class="product-price">€ ${b.price.toFixed(2).replace('.', ',')}</span>
-          ${b.url
+          ${b.buyUrl
+            ? `<span class="btn-group">
+                 <a class="add-to-cart" href="${b.buyUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${buyBtn[currentLang]}</a>
+                 <a class="add-to-cart btn-secondary" href="${b.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${infoBtn[currentLang]}</a>
+               </span>`
+            : b.url
             ? `<a class="add-to-cart" href="${b.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${viewBtn[currentLang]}</a>`
             : `<button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${JSON.stringify(b).replace(/"/g, '&quot;')})">${addBtn[currentLang]}</button>`
           }
